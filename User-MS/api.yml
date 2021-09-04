@@ -1,0 +1,148 @@
+swagger: '2.0'
+info:
+  title: User MS API
+  version: "0.1"
+  description: User MS API
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: "/api"
+securityDefinitions:
+  jwt:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-authentication-scheme: Bearer
+    x-bearerInfoFunc: app.decode_token
+paths:
+  /users/delete/{user_id}:
+    delete:
+      tags: [ User ]
+      operationId: app.delete_user
+      parameters:
+        - $ref: '#/parameters/user_id'
+      responses:
+        200:
+          description: Successfully deleted user
+        404:
+          description: User not found
+  /users:
+    get:
+      tags: [ User ]
+      operationId: app.get_all_users
+      responses:
+        200:
+          description: All the users
+  /user/{username}/details:
+    get:
+      tags: [ User ]
+      operationId: app.get_user_details
+      parameters:
+        - $ref: '#/parameters/username'
+      responses:
+        200:
+          description: Details for given user id
+        404:
+          description: User not found
+
+  /registration:
+    post:
+      tags: [ User ]
+      operationId: app.register_user
+      parameters:
+        - $ref: '#/parameters/user_register_body'
+      responses:
+        200:
+          description: New user added!
+        404:
+          description: Bad credentials!
+  /auth:
+    post:
+      tags: [ Auth ]
+      operationId: app.auth
+      parameters:
+        - $ref: '#/parameters/auth_body'
+      responses:
+        200:
+          description: Return jwt token
+        401:
+          description: Bad auth
+
+  /auth_microservice:
+    post:
+      tags: [ Auth ]
+      operationId: app.auth_microservice
+      parameters:
+        - $ref: '#/parameters/auth_body_microservice'
+      responses:
+        200:
+          description: Return jwt token
+        401:
+          description: Bad auth
+
+parameters:
+  auth_body:
+    name: auth_body
+    description: Login and get token
+    in: body
+    schema:
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+  auth_body_microservice:
+    name: auth_body_microservice
+    description: Login and get token for microservices
+    in: body
+    schema:
+      required:
+        - apikey
+      properties:
+        apikey:
+          type: string
+  username:
+    name: username
+    description: Users name
+    in: path
+    required: true
+    type: string
+  user_register_body:
+    name: user_register_body
+    description: Register new user
+    in: body
+    schema:
+      required:
+        - username
+        - password
+        - name
+        - surname
+        - email
+        - confirm_password
+        - is_admin
+      properties:
+        is_admin:
+          type: integer
+        username:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        confirm_password:
+          type: string
+
+  user_id:
+    name: user_id
+    description: The id for the user
+    in: path
+    required: true
+    type: integer

@@ -1,0 +1,8 @@
+Flask
+Flask-Migrate
+connexion[swagger-ui]
+sqlalchemy
+pyjwt
+marshmallow-sqlalchemy
+flask-bcrypt
+python-consul
