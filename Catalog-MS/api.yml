@@ -1,0 +1,278 @@
+swagger: '2.0'
+info:
+  title: Catalog MS API
+  version: "0.1"
+  description: Song & album catalog MS API
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: "/api"
+securityDefinitions:
+  jwt:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-authentication-scheme: Bearer
+    x-bearerInfoFunc: app.decode_token
+paths:
+  /songs:
+    get:
+      tags: [ Song ]
+      operationId: app.get_all_songs
+      responses:
+        200:
+          description: All songs
+  /song/add:
+    post:
+      tags: [ Song ]
+      operationId: app.create_song
+      summary: Creating song entity in DB
+      parameters:
+          - $ref: '#/parameters/song_body'
+      responses:
+        200:
+          description: Successfully created song
+        404:
+          description: Song already exists
+
+  /song/details:
+    post:
+      tags: [ Song ]
+      operationId: app.get_song
+      parameters:
+          - $ref: '#/parameters/request_body_song'
+      responses:
+        200:
+          description: Retrieved song with given id
+        404:
+          description: Song was not found
+
+  /song/{song_id}/update:
+    put:
+      tags: [ Song ]
+      operationId: app.update_song
+      parameters:
+          - $ref: '#/parameters/song_id'
+          - $ref: '#/parameters/song_update'
+      responses:
+        200:
+          description: Successfully updated song
+        404:
+          description: Song was not found
+
+  /song/{song_id}/buy:
+    post:
+      tags: [ Song ]
+      operationId: app.buy_song
+      parameters:
+        - $ref: '#/parameters/song_id'
+        - $ref: '#/parameters/song_copies'
+      responses:
+        200:
+          description: Successfully reserved song
+        404:
+          description: Something went wrong
+
+  /albums:
+    get:
+      tags: [ Album ]
+      operationId: app.get_all_albums
+      responses:
+        200:
+          description: All albums
+  /album/add:
+    post:
+      tags: [ Album ]
+      operationId: app.create_album
+      summary: Creating album entity in DB
+      parameters:
+        - $ref: '#/parameters/album_body'
+      responses:
+        200:
+          description: Successfully created album
+        404:
+          description: Album already exists
+
+  /album/details:
+    post:
+      tags: [ Album ]
+      operationId: app.get_album
+      parameters:
+        - $ref: '#/parameters/request_body_album'
+      responses:
+        200:
+          description: Retrieved album with given id
+        404:
+          description: Album was not found
+
+  /album/{album_id}/update:
+    put:
+      tags: [ Album ]
+      operationId: app.update_album
+      parameters:
+        - $ref: '#/parameters/album_id'
+        - $ref: '#/parameters/album_update'
+      responses:
+        200:
+          description: Successfully updated album
+        404:
+          description: Album was not found
+
+  /album/{album_id}/buy:
+    post:
+      tags: [ Album ]
+      operationId: app.buy_album
+      parameters:
+        - $ref: '#/parameters/album_id'
+        - $ref: '#/parameters/album_copies'
+      responses:
+        200:
+          description: Successfully reserved album
+        404:
+          description: Something went wrong
+parameters:
+  song_id:
+    name: song_id
+    description: Song ID
+    in: path
+    required: true
+    type: integer
+
+  request_body_song:
+    name: request_body_song
+    description: get song details
+    in: body
+    schema:
+      required:
+        - song_name
+      properties:
+        song_name:
+          type: string
+
+  song_copies:
+    name: song_copies
+    description: Number of song copies to reserve
+    in: body
+    schema:
+      required:
+        - no_copies
+      properties:
+        no_copies:
+          type: integer
+
+  song_update:
+    name: song_update
+    description: Song update arguments
+    in: body
+    schema:
+      required:
+        - copies
+        - available
+        - price
+      properties:
+        copies:
+          type: integer
+        available:
+          type: boolean
+        price:
+          type: number
+          format: double
+
+  song_body:
+    name: song_body
+    description: Song creation arguments
+    in: body
+    schema:
+      required:
+        - artist
+        - name
+        - length
+        - copies
+        - price
+      properties:
+        artist:
+          type: string
+        name:
+          type: string
+        length:
+          type: integer
+        copies:
+          type: integer
+        price:
+          type: number
+          format: double
+
+  album_id:
+    name: album_id
+    description: Album ID
+    in: path
+    required: true
+    type: integer
+
+  request_body_album:
+    name: request_body_album
+    description: get album details
+    in: body
+    schema:
+      required:
+        - album_name
+      properties:
+        album_name:
+          type: string
+
+  album_copies:
+    name: album_copies
+    description: Number of album copies to reserve
+    in: body
+    schema:
+      required:
+        - no_copies
+      properties:
+        no_copies:
+          type: integer
+
+  album_update:
+    name: album_update
+    description: Album update arguments
+    in: body
+    schema:
+      required:
+        - copies
+        - available
+        - price
+      properties:
+        copies:
+          type: integer
+        available:
+          type: boolean
+        price:
+          type: number
+          format: double
+
+  album_body:
+    name: album_body
+    description: Album creation arguments
+    in: body
+    schema:
+      required:
+        - artist
+        - name
+        - length
+        - no_songs
+        - copies
+        - price
+      properties:
+        artist:
+          type: string
+        name:
+          type: string
+        length:
+          type: integer
+        no_songs:
+          type: integer
+        copies:
+          type: integer
+        price:
+          type: number
+          format: double

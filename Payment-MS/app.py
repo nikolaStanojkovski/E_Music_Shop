@@ -78,13 +78,13 @@ def calculateTotalMoney(money_to_pay, quantity):
     return initial_price + transaction_fee + payment_fee
 
 
-# @has_role(["shopping_cart"])
+@has_role(["shopping_cart"])
 def get_total_money(request_body):
     total_price = calculateTotalMoney(request_body['product_price'], request_body['number_copies'])
     return {'Total Price': f'{total_price}'}, 200
 
 
-# @has_role(["shopping_cart"])
+@has_role(["shopping_cart"])
 def make_payment(payment_body):
     date_payment = datetime.now()
     quantity = payment_body['money'] / payment_body['product_price']
