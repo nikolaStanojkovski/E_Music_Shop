@@ -20,6 +20,7 @@ paths:
     delete:
       tags: [ User ]
       operationId: app.delete_user
+      summary: Delete a user entity from DB
       parameters:
         - $ref: '#/parameters/user_id'
       responses:
@@ -31,6 +32,7 @@ paths:
     get:
       tags: [ User ]
       operationId: app.get_all_users
+      summary: Get the full user list with details
       responses:
         200:
           description: All the users
@@ -38,6 +40,7 @@ paths:
     get:
       tags: [ User ]
       operationId: app.get_user_details
+      summary: Get the details for a user with the specified username
       parameters:
         - $ref: '#/parameters/username'
       responses:
@@ -50,6 +53,7 @@ paths:
     post:
       tags: [ User ]
       operationId: app.register_user
+      summary: Register a new user entity to the DB
       parameters:
         - $ref: '#/parameters/user_register_body'
       responses:
@@ -61,6 +65,7 @@ paths:
     post:
       tags: [ Auth ]
       operationId: app.auth
+      summary: Authorize a user
       parameters:
         - $ref: '#/parameters/auth_body'
       responses:
@@ -73,6 +78,7 @@ paths:
     post:
       tags: [ Auth ]
       operationId: app.auth_microservice
+      summary: Authorize a microservice for the specific rights
       parameters:
         - $ref: '#/parameters/auth_body_microservice'
       responses:

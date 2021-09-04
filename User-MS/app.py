@@ -21,7 +21,7 @@ INVENTORY_APIKEY = 'INVENTORY MS SECRET'
 
 consul_port = 8500
 service_name = "user"
-service_port = 5002
+service_port = 5001
 
 
 def register_to_consul():

@@ -1,0 +1,117 @@
+swagger: '2.0'
+info:
+  title: Order MS API
+  version: "0.1"
+  description: Orders MS API
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: "/api"
+securityDefinitions:
+  jwt:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-authentication-scheme: Bearer
+    x-bearerInfoFunc: app.decode_token
+paths:
+  /orders:
+    get:
+      tags: [ Order ]
+      operationId: app.get_all_orders
+      summary: Get all orders
+      responses:
+        200:
+          description: All orders
+
+  /orders/{username}:
+    get:
+      tags: [ Order ]
+      operationId: app.get_user_orders
+      summary: Get all users for a specified user
+      parameters:
+        - $ref: '#/parameters/username'
+      responses:
+        200:
+          description: All orders for a specified user
+
+  /orders/{shopping_cart}:
+    get:
+      tags: [ Order ]
+      operationId: app.get_orders_shopping_cart
+      summary: Get all users for a specified shopping cart
+      parameters:
+        - $ref: '#/parameters/shopping_cart'
+      responses:
+        200:
+          description: All orders for a specified user
+
+  /order/add:
+    post:
+      tags: [ Order ]
+      operationId: app.create_order
+      summary: Creating order entity in DB
+      parameters:
+          - $ref: '#/parameters/order_body'
+      responses:
+        200:
+          description: Successfully created order
+        404:
+          description: Order already exists
+
+  /order/{order_id}/details:
+    get:
+      tags: [ Order ]
+      operationId: app.get_order_details
+      summary: Get details for a order with the specified id
+      parameters:
+          - $ref: '#/parameters/order_id'
+      responses:
+        200:
+          description: Retrieved order with given id
+        404:
+          description: Order was not found
+
+parameters:
+  username:
+    name: username
+    description: Username
+    in: path
+    required: true
+    type: string
+
+  shopping_cart:
+    name: shopping_cart
+    description: Shopping cart ID
+    in: path
+    required: true
+    type: integer
+
+  order_id:
+    name: order_id
+    description: Order ID
+    in: path
+    required: true
+    type: integer
+
+  order_body:
+    name: order_body
+    description: Order creation arguments
+    in: body
+    schema:
+      required:
+        - username
+        - shopping_cart
+        - number_products
+        - total_price
+      properties:
+        username:
+          type: string
+        shopping_cart:
+          type: integer
+        number_products:
+          type: integer
+        total_price:
+          type: number
+          format: double

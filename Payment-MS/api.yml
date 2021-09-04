@@ -20,6 +20,7 @@ paths:
     get:
       tags: [ Payment ]
       operationId: app.get_all_payments
+      summary: Get the full payment list with details
       responses:
         200:
           description: All the payments from all users
@@ -27,6 +28,7 @@ paths:
     post:
       tags: [ Payment ]
       operationId: app.get_total_money
+      summary: Get the total money needed to pay for a specific order
       parameters:
         - $ref: '#/parameters/request_body'
       responses:
@@ -38,6 +40,7 @@ paths:
     post:
       tags: [ Payment ]
       operationId: app.make_payment
+      summary: Create payment entity in DB
       parameters:
         - $ref: '#/parameters/payment_body'
       responses:

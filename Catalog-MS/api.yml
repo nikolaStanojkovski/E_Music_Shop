@@ -20,6 +20,7 @@ paths:
     get:
       tags: [ Song ]
       operationId: app.get_all_songs
+      summary: Get the full song list with details
       responses:
         200:
           description: All songs
@@ -40,6 +41,7 @@ paths:
     post:
       tags: [ Song ]
       operationId: app.get_song
+      summary: Get the details for a song with the specified name
       parameters:
           - $ref: '#/parameters/request_body_song'
       responses:
@@ -52,6 +54,7 @@ paths:
     put:
       tags: [ Song ]
       operationId: app.update_song
+      summary: Update song entity in DB
       parameters:
           - $ref: '#/parameters/song_id'
           - $ref: '#/parameters/song_update'
@@ -65,6 +68,7 @@ paths:
     post:
       tags: [ Song ]
       operationId: app.buy_song
+      summary: Buy a song with the specified id
       parameters:
         - $ref: '#/parameters/song_id'
         - $ref: '#/parameters/song_copies'
@@ -78,6 +82,7 @@ paths:
     get:
       tags: [ Album ]
       operationId: app.get_all_albums
+      summary: Get the full album list with details
       responses:
         200:
           description: All albums
@@ -98,6 +103,7 @@ paths:
     post:
       tags: [ Album ]
       operationId: app.get_album
+      summary: Get the details for the album with the specified name
       parameters:
         - $ref: '#/parameters/request_body_album'
       responses:
@@ -110,6 +116,7 @@ paths:
     put:
       tags: [ Album ]
       operationId: app.update_album
+      summary: Update album entity in DB
       parameters:
         - $ref: '#/parameters/album_id'
         - $ref: '#/parameters/album_update'
@@ -123,6 +130,7 @@ paths:
     post:
       tags: [ Album ]
       operationId: app.buy_album
+      summary: Buy an album with the specified id
       parameters:
         - $ref: '#/parameters/album_id'
         - $ref: '#/parameters/album_copies'

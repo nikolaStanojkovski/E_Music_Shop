@@ -14,8 +14,8 @@ JWT_LIFETIME_SECONDS = 600000
 # Adding MS to consul
 
 consul_port = 8500
-service_name = "inventory"
-service_port = 5000
+service_name = "catalog"
+service_port = 5002
 
 
 def register_to_consul():
