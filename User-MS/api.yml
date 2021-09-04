@@ -26,7 +26,7 @@ paths:
         200:
           description: Successfully deleted user
         404:
-          description: User not found
+          description: Error 404, resource has not been found
   /users:
     get:
       tags: [ User ]
@@ -44,7 +44,7 @@ paths:
         200:
           description: Details for given user id
         404:
-          description: User not found
+          description: Error 404, resource has not been found
 
   /registration:
     post:
@@ -67,7 +67,7 @@ paths:
         200:
           description: Return jwt token
         401:
-          description: Bad auth
+          description: Bad authentication
 
   /auth_microservice:
     post:
@@ -79,7 +79,7 @@ paths:
         200:
           description: Return jwt token
         401:
-          description: Bad auth
+          description: Bad authentication
 
 parameters:
   auth_body:

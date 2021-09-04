@@ -97,21 +97,21 @@ def auth_microservice(auth_body_microservice):
     apikey = auth_body_microservice['apikey']
     roles = []
     if apikey == INVENTORY_APIKEY:
-        roles.append("inventory")
-        sub = 'inventory'
+        roles.append("catalog")
+        sub = 'catalog'
     elif apikey == PAYMENT_APIKEY:
-        roles.append("payments")
-        sub = 'payments'
+        roles.append("payment")
+        sub = 'payment'
     elif apikey == SHOPPING_CART_APIKEY:
         roles.append("shopping_cart")
         sub = 'shopping_cart'
     elif apikey == RESERVATIONS_APIKEY:
-        roles.append("reserve")
-        sub = 'reserve'
+        roles.append("order")
+        sub = 'order'
 
     timestamp = int(time.time())
     payload = {
-        "iss": 'Book Reservation App',
+        "iss": 'E Music Shop',
         "iat": int(timestamp),
         "exp": int(timestamp + JWT_LIFETIME_SECONDS),
         "sub": sub,

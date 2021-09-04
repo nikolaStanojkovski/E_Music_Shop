@@ -1,0 +1,83 @@
+swagger: '2.0'
+info:
+  title: Payments MS API
+  version: "0.1"
+  description: Payments MS API
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: "/api"
+securityDefinitions:
+  jwt:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-authentication-scheme: Bearer
+    x-bearerInfoFunc: app.decode_token
+paths:
+  /get_all_payments:
+    get:
+      tags: [ Payment ]
+      operationId: app.get_all_payments
+      responses:
+        200:
+          description: All the payments from all users
+  /get_total_money/:
+    post:
+      tags: [ Payment ]
+      operationId: app.get_total_money
+      parameters:
+        - $ref: '#/parameters/request_body'
+      responses:
+        200:
+          description: Total Money to pay
+        404:
+          description: Error 404, resource has not been found
+  /make_payment/:
+    post:
+      tags: [ Payment ]
+      operationId: app.make_payment
+      parameters:
+        - $ref: '#/parameters/payment_body'
+      responses:
+        200:
+          description: Successfully paid
+        404:
+          description: Error 404, resource has not been found
+parameters:
+  payment_body:
+    name: payment_body
+    description: Make payment
+    in: body
+    schema:
+      required:
+        - product_name
+        - product_price
+        - username
+        - money
+      properties:
+        product_name:
+          type: string
+        money:
+          type: number
+          format: double
+        product_price:
+          type: number
+          format: double
+        username:
+          type: string
+  request_body:
+    name: request_body
+    description: Get total money to pay
+    in: body
+    schema:
+      required:
+        - product_price
+        - number_copies
+      properties:
+        product_price:
+          type: number
+          format: double
+        number_copies:
+          type: integer
