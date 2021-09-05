@@ -1,0 +1,5 @@
+User MS - 5001
+Catalog MS - 5002
+Shopping Cart - 5003
+Payment MS - 5004
+Order MS - 5005
