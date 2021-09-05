@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+
+  consul:
+    image: consul
+    ports:
+      - "8500:8500"
+
+  user:
+    build:
+      context: ./User-MS
+    volumes:
+      - ./User-MS:/app
+    ports:
+      - "5001:5000"
+    container_name: user
+
+  catalog:
+    build:
+      context: ./Catalog-MS
+    volumes:
+      - ./Catalog-MS:/app
+    ports:
+      - "5002:5000"
+    container_name: catalog
+
+  shopping_cart:
+    build:
+      context: ./Shopping-Cart-MS
+    volumes:
+      - ./Shopping-Cart-MS:/app
+    ports:
+      - "5003:5000"
+    container_name: shopping_cart
+
+  payment:
+    build:
+      context: ./Payment-MS
+    volumes:
+      - ./Payment-MS:/app
+    ports:
+      - "5004:5000"
+    container_name: payment
+
+  order:
+    build:
+      context: ./Order-MS
+    volumes:
+      - ./Order-MS:/app
+    ports:
+      - "5005:5000"
+    container_name: order
