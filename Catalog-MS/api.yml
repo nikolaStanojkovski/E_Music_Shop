@@ -30,7 +30,7 @@ paths:
       operationId: app.create_song
       summary: Creating song entity in DB
       parameters:
-          - $ref: '#/parameters/song_body'
+        - $ref: '#/parameters/song_body'
       responses:
         200:
           description: Successfully created song
@@ -43,7 +43,7 @@ paths:
       operationId: app.get_song
       summary: Get the details for a song with the specified name
       parameters:
-          - $ref: '#/parameters/request_body_song'
+        - $ref: '#/parameters/request_body_song'
       responses:
         200:
           description: Retrieved song with given id
@@ -56,21 +56,21 @@ paths:
       operationId: app.update_song
       summary: Update song entity in DB
       parameters:
-          - $ref: '#/parameters/song_id'
-          - $ref: '#/parameters/song_update'
+        - $ref: '#/parameters/song_id'
+        - $ref: '#/parameters/song_update'
       responses:
         200:
           description: Successfully updated song
         404:
           description: Song was not found
 
-  /song/{song_id}/buy:
+  /song/{song_name}/buy:
     post:
       tags: [ Song ]
       operationId: app.buy_song
-      summary: Buy a song with the specified id
+      summary: Buy a song with the specified name
       parameters:
-        - $ref: '#/parameters/song_id'
+        - $ref: '#/parameters/song_name'
         - $ref: '#/parameters/song_copies'
       responses:
         200:
@@ -126,13 +126,13 @@ paths:
         404:
           description: Album was not found
 
-  /album/{album_id}/buy:
+  /album/{album_name}/buy:
     post:
       tags: [ Album ]
       operationId: app.buy_album
-      summary: Buy an album with the specified id
+      summary: Buy an album with the specified name
       parameters:
-        - $ref: '#/parameters/album_id'
+        - $ref: '#/parameters/album_name'
         - $ref: '#/parameters/album_copies'
       responses:
         200:
@@ -140,6 +140,13 @@ paths:
         404:
           description: Something went wrong
 parameters:
+  song_name:
+    name: song_name
+    description: Song name
+    in: path
+    required: true
+    type: string
+
   song_id:
     name: song_id
     description: Song ID
@@ -210,6 +217,13 @@ parameters:
         price:
           type: number
           format: double
+
+  album_name:
+    name: album_name
+    description: Album name
+    in: path
+    required: true
+    type: string
 
   album_id:
     name: album_id

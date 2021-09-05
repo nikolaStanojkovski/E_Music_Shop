@@ -103,16 +103,17 @@ def get_song(request_body_song):
         return {'error': 'Song with name: {} was not found!'.format(request_body_song['song_name'])}, 404
 
 
-def update_song(song_id, song_update):
-    existing_song = db.session.query(Song).get(song_id)
+@has_role(["admin"])
+def update_song(song_name, song_update):
+    existing_song = db.session.query(Song).get(song_name)
     if not existing_song:
-        return {'error': 'Song with id: {} was not found!'.format(song_id)}, 404
+        return {'error': 'Song with id: {} was not found!'.format(song_name)}, 404
     existing_song.copies = song_update['copies']
     existing_song.available = song_update['available']
     existing_song.price = song_update['price']
 
     db.session.commit()
-    existing_song = db.session.query(Song).get(song_id)
+    existing_song = db.session.query(Song).get(song_name)
     return song_schema.dump(existing_song)
 
 
@@ -122,15 +123,15 @@ def get_all_songs():
 
 
 @has_role(["shopping_cart"])
-def buy_song(song_id, song_copies):
-    song = db.session.query(Song).get(song_id)
+def buy_song(song_name, song_copies):
+    song = db.session.query(Song).filter_by(name=song_name).first()
     if song.available:
         if song.copies - song_copies['no_copies'] >= 0:
             song.copies -= song_copies['no_copies']
             if song.copies == 0:
                 song.available = False
             db.session.commit()
-            return {'success': 'Song is successfully bought!'}, 200
+            return album_schema.dump(song)
         else:
             return {'error': 'Not available copies!'}, 404
     else:
@@ -174,6 +175,7 @@ def get_album(request_body_album):
         return {'error': 'Album with name: {} was not found!'.format(request_body_album['album_name'])}, 404
 
 
+@has_role(["admin"])
 def update_album(album_id, album_update):
     existing_album = db.session.query(Album).get(album_id)
     if not existing_album:
@@ -193,15 +195,15 @@ def get_all_albums():
 
 
 @has_role(["shopping_cart"])
-def buy_album(album_id, album_copies):
-    album = db.session.query(Album).get(album_id)
+def buy_album(album_name, album_copies):
+    album = db.session.query(Album).filter_by(name=album_name).first()
     if album.available:
         if album.copies - album_copies['no_copies'] >= 0:
             album.copies -= album_copies['no_copies']
             if album.copies == 0:
                 album.available = False
             db.session.commit()
-            return {'success': 'Album is successfully bought!'}, 200
+            return album_schema.dump(album)
         else:
             return {'error': 'Not available copies!'}, 404
     else:

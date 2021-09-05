@@ -24,18 +24,6 @@ paths:
       responses:
         200:
           description: All the payments from all users
-  /get_total_money/:
-    post:
-      tags: [ Payment ]
-      operationId: app.get_total_money
-      summary: Get the total money needed to pay for a specific order
-      parameters:
-        - $ref: '#/parameters/request_body'
-      responses:
-        200:
-          description: Total Money to pay
-        404:
-          description: Error 404, resource has not been found
   /make_payment/:
     post:
       tags: [ Payment ]
@@ -55,32 +43,17 @@ parameters:
     in: body
     schema:
       required:
-        - product_name
-        - product_price
+        - shopping_cart
         - username
+        - quantity
         - money
       properties:
-        product_name:
-          type: string
+        shopping_cart:
+          type: integer
+        quantity:
+          type: integer
         money:
-          type: number
-          format: double
-        product_price:
           type: number
           format: double
         username:
           type: string
-  request_body:
-    name: request_body
-    description: Get total money to pay
-    in: body
-    schema:
-      required:
-        - product_price
-        - number_copies
-      properties:
-        product_price:
-          type: number
-          format: double
-        number_copies:
-          type: integer

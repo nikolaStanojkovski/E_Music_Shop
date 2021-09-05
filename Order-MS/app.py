@@ -67,6 +67,7 @@ def decode_token(token):
     return jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
 
 
+@has_role(["shopping_cart"])
 def create_order(order_body):
     username = order_body['username']
     shopping_cart = order_body['shopping_cart']
@@ -80,7 +81,7 @@ def create_order(order_body):
     return order_schema.dump(new_order)
 
 
-# @has_role(["shopping_cart", "payment"])
+@has_role(["shopping_cart"])
 def get_order_details(order_id):
     existing_order = db.session.query(Order).filter_by(id=order_id).first()
     if existing_order:
@@ -89,13 +90,13 @@ def get_order_details(order_id):
         return {'error': 'Order not found'}, 404
 
 
-# @has_role(["shopping_cart", "payment"])
+@has_role(["shopping_cart"])
 def get_user_orders(username):
     orders = db.session.query(Order).filter_by(username=username)
     return order_schema.dump(orders, many=True)
 
 
-# @has_role(["shopping_cart", "payment"])
+@has_role(["shopping_cart"])
 def get_orders_shopping_cart(shopping_cart):
     orders = db.session.query(Order).filter_by(shopping_cart=shopping_cart)
     return order_schema.dump(orders, many=True)

@@ -69,8 +69,8 @@ def decode_token(token):
     return jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
 
 
-def calculateTotalMoney(money_to_pay, quantity):
-    initial_price = money_to_pay * quantity
+def calculateTotalMoney(money_to_pay):
+    initial_price = money_to_pay
     transaction_fee = 5.0
     # payment fee is 10% from the initial price
     payment_fee = initial_price * 0.1
@@ -79,21 +79,12 @@ def calculateTotalMoney(money_to_pay, quantity):
 
 
 @has_role(["shopping_cart"])
-def get_total_money(request_body):
-    total_price = calculateTotalMoney(request_body['product_price'], request_body['number_copies'])
-    return {'Total Price': f'{total_price}'}, 200
-
-
-@has_role(["shopping_cart"])
 def make_payment(payment_body):
     date_payment = datetime.now()
-    quantity = payment_body['money'] / payment_body['product_price']
-    total_money = calculateTotalMoney(payment_body['product_price'], quantity)
+    quantity = payment_body['quantity']
+    total_money = calculateTotalMoney(payment_body['money'])
 
-    while total_money > payment_body['money']:
-        total_money -= payment_body['product_price']
-
-    payment = Payment(username=payment_body['username'], product_name=payment_body['product_name'],
+    payment = Payment(username=payment_body['username'], shopping_cart=payment_body['shopping_cart'],
                       date=date_payment, quantity=quantity, total_money=total_money)
 
     db.session.add(payment)

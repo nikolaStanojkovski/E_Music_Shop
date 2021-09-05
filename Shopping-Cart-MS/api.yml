@@ -1,0 +1,270 @@
+swagger: '2.0'
+info:
+  title: Shopping Cart MS API
+  version: "0.1"
+  description: Shopping Cart MS API
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: "/api"
+securityDefinitions:
+  jwt:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-authentication-scheme: Bearer
+    x-bearerInfoFunc: app.decode_token
+paths:
+  /shopping_carts:
+    get:
+      tags: [ Shopping Cart ]
+      operationId: app.get_all_shopping_carts
+      summary: Get the full shopping cart list with details
+      responses:
+        200:
+          description: All shopping carts
+
+  /shopping_cart/create:
+    post:
+      tags: [ Shopping Cart ]
+      operationId: app.create_shopping_cart
+      summary: Create new shopping cart entity in DB
+      parameters:
+        - $ref: '#/parameters/shopping_cart_body'
+      responses:
+        200:
+          description: Retrieved shopping cart with given id
+        404:
+          description: Shopping cart was not found
+
+  /shopping_cart/{shopping_cart_id}/details:
+    post:
+      tags: [ Shopping Cart ]
+      operationId: app.get_shopping_cart
+      summary: Get the details for a shopping cart with the specified id
+      parameters:
+        - $ref: '#/parameters/shopping_cart_id'
+      responses:
+        200:
+          description: Retrieved shopping cart with given id
+        404:
+          description: Shopping cart was not found
+
+  /shopping_cart/add/song:
+    post:
+      tags: [ Shopping Cart ]
+      operationId: app.add_song_to_shopping_cart
+      summary: Add a song to a shopping cart with the specified id
+      parameters:
+        - $ref: '#/parameters/shopping_cart_song'
+      responses:
+        200:
+          description: Succesfully added the song to the specified shopping cart
+        404:
+          description: There was a problem adding a song to the specified shopping cart
+  /shopping_cart/add/album:
+    post:
+      tags: [ Shopping Cart ]
+      operationId: app.add_album_to_shopping_cart
+      summary: Add a album to a shopping cart with the specified id
+      parameters:
+        - $ref: '#/parameters/shopping_cart_album'
+      responses:
+        200:
+          description: Succesfully added the album to the specified shopping cart
+        404:
+          description: There was a problem adding an album to the specified shopping cart
+
+  /create_song:
+    post:
+      tags: [ Song Creation ]
+      operationId: app.create_new_song
+      summary: Create a new song in the Catalog MS
+      parameters:
+        - $ref: '#/parameters/shopping_cart_song'
+      responses:
+        200:
+          description: Successfully created song
+        404:
+          description: There was a problem when attempting to add a song
+  /create_album:
+    post:
+      tags: [ Album Creation ]
+      operationId: app.create_new_album
+      summary: Create a new album in the Catalog MS
+      parameters:
+        - $ref: '#/parameters/album_body'
+      responses:
+        200:
+          description: Successfully created album
+        404:
+          description: There was a problem when attempting to add an album
+
+  /create_order:
+    post:
+      tags: [ Order Creation ]
+      operationId: app.make_order
+      summary: Create a new order and delete the shopping cart
+      parameters:
+        - $ref: '#/parameters/create_order_body'
+      responses:
+        200:
+          description: Successfully created order
+        404:
+          description: There was a problem when attempting to create an order
+
+parameters:
+  shopping_cart_body:
+    name: shopping_cart_body
+    description: Shopping cart creation arguments
+    in: body
+    schema:
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+  shopping_cart_id:
+    name: shopping_cart_id
+    description: The id required to search the particular shopping cart
+    in: path
+    required: true
+    type: integer
+
+  username:
+    name: username
+    description: The username required to search the particular user
+    in: path
+    required: true
+    type: string
+
+  song_body:
+    name: song_body
+    description: Song creation arguments
+    in: body
+    schema:
+      required:
+        - username
+        - password
+        - artist
+        - name
+        - length
+        - copies
+        - price
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        artist:
+          type: string
+        name:
+          type: string
+        length:
+          type: integer
+        copies:
+          type: integer
+        price:
+          type: number
+          format: double
+
+  album_body:
+    name: album_body
+    description: Album creation arguments
+    in: body
+    schema:
+      required:
+        - username
+        - password
+        - artist
+        - name
+        - length
+        - no_songs
+        - copies
+        - price
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        artist:
+          type: string
+        name:
+          type: string
+        length:
+          type: integer
+        no_songs:
+          type: integer
+        copies:
+          type: integer
+        price:
+          type: number
+          format: double
+
+  shopping_cart_song:
+    name: shopping_cart_song
+    description: Add song to shopping cart arguments
+    in: body
+    schema:
+      required:
+        - username
+        - password
+        - shopping_cart_id
+        - name
+        - no_copies
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        shopping_cart_id:
+          type: integer
+        name:
+          type: string
+        no_copies:
+          type: integer
+
+  shopping_cart_album:
+    name: shopping_cart_album
+    description: Add album to shopping cart arguments
+    in: body
+    schema:
+      required:
+        - username
+        - password
+        - shopping_cart_id
+        - name
+        - no_copies
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        shopping_cart_id:
+          type: integer
+        name:
+          type: string
+        no_copies:
+          type: integer
+
+  create_order_body:
+    name: create_order_body
+    description: Create an order arguments
+    in: body
+    schema:
+        required:
+          - username
+          - password
+          - shopping_cart_id
+        properties:
+          username:
+            type: string
+          password:
+            type: string
+          shopping_cart_id:
+            type: integer
