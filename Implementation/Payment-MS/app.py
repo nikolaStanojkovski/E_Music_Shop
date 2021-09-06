@@ -108,7 +108,7 @@ from models import Payment, PaymentSchema
 
 payment_schema = PaymentSchema()
 
-# register_to_consul()
+register_to_consul()
 
 if __name__ == "__main__":
     connexion_app.run(host='0.0.0.0', port=5004, debug=True)

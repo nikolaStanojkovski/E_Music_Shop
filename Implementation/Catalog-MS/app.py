@@ -222,7 +222,7 @@ from models import Album, AlbumSchema, Song, SongSchema
 album_schema = AlbumSchema()
 song_schema = SongSchema()
 
-# register_to_consul()
+register_to_consul()
 
 if __name__ == "__main__":
     connexion_app.run(host='0.0.0.0', port=5002, debug=True)

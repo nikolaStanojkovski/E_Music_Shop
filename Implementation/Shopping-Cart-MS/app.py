@@ -315,6 +315,8 @@ connexion_app.add_api("api.yml")
 from models import ShoppingCart, ShoppingCartSchema
 
 shopping_cart_schema = ShoppingCartSchema()
-# register_to_consul()
+
+register_to_consul()
+
 if __name__ == "__main__":
     connexion_app.run(host='0.0.0.0', port=5003, debug=True)

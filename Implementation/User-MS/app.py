@@ -177,7 +177,8 @@ from models import User, UserSchema
 
 user_schema = UserSchema(exclude=['password'])
 bcrypt = Bcrypt(app)
-# register_to_consul()
+
+register_to_consul()
 
 if __name__ == "__main__":
     connexion_app.run(host='0.0.0.0', port=5001, debug=True)
